@@ -1,11 +1,15 @@
 package com.dnd.eight.Service;
 
+import com.dnd.eight.Controller.Dto.SpaceAttendDto;
 import com.dnd.eight.Controller.Dto.SpaceResponseDto;
 import com.dnd.eight.Domain.Space.Space;
 import com.dnd.eight.Domain.Space.SpaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -41,4 +45,9 @@ public class SpaceService {
         return new String(tmp);
     }
 
+    public List<SpaceAttendDto> attendSpace(String code) {
+        return spaceRepository.findByCode(code).stream()
+                .map(SpaceAttendDto::new)
+                .collect(Collectors.toList());
+    }
 }
