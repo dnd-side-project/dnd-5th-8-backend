@@ -1,13 +1,13 @@
 package com.dnd.eight.Service;
 
 import com.dnd.eight.Controller.Dto.SpaceAttendDto;
-import com.dnd.eight.Controller.Dto.SpaceResponseDto;
 import com.dnd.eight.Domain.Space.Space;
 import com.dnd.eight.Domain.Space.SpaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,21 +17,23 @@ public class SpaceService {
     private final SpaceRepository spaceRepository;
 
     @Transactional
-    public String createSpace() {
+    public String createSpace(HashMap<String, String> map) {
+
         int length = 10;
         String randomCode = getRandomStr(length);
 
         spaceRepository.save(Space.builder()
                 .code(randomCode)
+                .name(map.get("name"))
                 .question_number(1)
                 .count(1)
                 .build()
         );
-
         return randomCode;
+        //return spaceRepository.save(spaceResponseDto.toEntity()).getCode();
     }
 
-    public static String getRandomStr(int size) {
+    public String getRandomStr(int size) {
         char[] tmp = new char[size];
         for (int i = 0; i < tmp.length; i++) {
             int div = (int) Math.floor(Math.random() * 2);
