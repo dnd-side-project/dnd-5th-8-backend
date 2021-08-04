@@ -4,12 +4,9 @@ import com.dnd.eight.Controller.Dto.CheckSpaceCode;
 import com.dnd.eight.Controller.Dto.SpaceAttendDto;
 import com.dnd.eight.Service.SpaceService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Check;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -17,9 +14,10 @@ import java.util.List;
 public class SpaceController {
     private final SpaceService spaceService;
 
-    @GetMapping("/space/create")
-    public String createSpace() {
-        return spaceService.createSpace();
+    @PostMapping("/space/create")
+    public String createSpace(@RequestBody HashMap<String, String> map) {
+
+        return spaceService.createSpace(map);
     }
 
     @GetMapping("/space/attend/{code}")

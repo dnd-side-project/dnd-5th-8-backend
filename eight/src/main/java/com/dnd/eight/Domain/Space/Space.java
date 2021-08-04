@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity(name="Space")
+@Entity(name="space")
 public class Space {
 
     @Id
@@ -17,12 +17,16 @@ public class Space {
     @Column(length = 500, nullable = false)
     private String code;
 
+    @Column(length = 500, nullable = false)
+    private String name;
+
     private int question_number;
     private int count;
 
     @Builder
-    public Space(String code, int question_number, int count) {
+    public Space(String code, String name, int question_number, int count) {
         this.code = code;
+        this.name = name;
         this.question_number = question_number;
         this.count = count;
     }
