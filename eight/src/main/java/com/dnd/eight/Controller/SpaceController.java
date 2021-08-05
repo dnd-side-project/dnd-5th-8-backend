@@ -2,6 +2,7 @@ package com.dnd.eight.Controller;
 
 import com.dnd.eight.Controller.Dto.CheckSpaceCode;
 import com.dnd.eight.Controller.Dto.SpaceAttendDto;
+import com.dnd.eight.Controller.Dto.SpaceRequestDto;
 import com.dnd.eight.Service.SpaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,10 @@ public class SpaceController {
     private final SpaceService spaceService;
 
     @PostMapping("/space/create")
-    public String createSpace(@RequestBody HashMap<String, String> map) {
+    //public String createSpace(@RequestBody HashMap<String, String> map) {
+    public String createSpace(@RequestBody SpaceRequestDto spaceRequestDto) {
 
-        return spaceService.createSpace(map);
+        return spaceService.createSpace(spaceRequestDto);
     }
 
     @GetMapping("/space/attend/{code}")
@@ -34,4 +36,6 @@ public class SpaceController {
 
         return ans;
     }
+
+
 }
