@@ -16,7 +16,6 @@ public class SpaceController {
     private final SpaceService spaceService;
 
     @PostMapping("/space/create")
-    //public String createSpace(@RequestBody HashMap<String, String> map) {
     public String createSpace(@RequestBody SpaceRequestDto spaceRequestDto) {
 
         return spaceService.createSpace(spaceRequestDto);
