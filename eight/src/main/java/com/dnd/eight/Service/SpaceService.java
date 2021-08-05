@@ -1,6 +1,7 @@
 package com.dnd.eight.Service;
 
 import com.dnd.eight.Controller.Dto.SpaceAttendDto;
+import com.dnd.eight.Controller.Dto.SpaceIdUpdateDto;
 import com.dnd.eight.Controller.Dto.SpaceRequestDto;
 import com.dnd.eight.Domain.Login.User;
 import com.dnd.eight.Domain.Login.UserRepository;
@@ -19,6 +20,23 @@ import java.util.stream.Collectors;
 public class SpaceService {
     private final SpaceRepository spaceRepository;
     private final UserRepository userRepository;
+
+    public Long updateSpaceId(Long user_id, SpaceIdUpdateDto spaceIdUpdateDto) {
+        User user = userRepository.findById(user_id)
+                .orElseThrow(()->new IllegalArgumentException("해당 ID가 존재하지 않습니다. id="+user_id));
+
+        List<SpaceAttendDto> spacelist = spaceRepository.findByCode(spaceIdUpdateDto.getCode()).stream()
+                .map(SpaceAttendDto::new)
+                .collect(Collectors.toList());
+        Long space_id = spacelist.get(0).getId();
+
+        Space space = spaceRepository.findById(space_id)
+                .orElseThrow(()->new IllegalArgumentException("해당 ID가 존재하지 않습니다. id="+space_id));
+
+        space.addUser(user); // 이 부분에서 add가 안되는 듯?
+
+        return space_id;
+    }
 
     @Transactional
     public String createSpace(SpaceRequestDto spaceRequestDto) {
@@ -42,26 +60,6 @@ public class SpaceService {
 
         return randomCode;
     }
-/*
-    @Transactional
-    public String createSpace(HashMap<String, String> map) {
-
-        int length = 10;
-        String randomCode = getRandomStr(length);
-
-        Space space = spaceRepository.save(Space.builder()
-                .code(randomCode)
-                .name(map.get("name"))
-                .question_number(1)
-                .count(1)
-                .build()
-        );
-        Long user_id = Long.valueOf(map.get("user_id"));
-        User user = userRepository.findById(user_id).orElseThrow();
-        space.addUser(user);
-        return randomCode;
-        //return spaceRepository.save(spaceResponseDto.toEntity()).getCode();
-    }*/
 
     public String getRandomStr(int size) {
         char[] tmp = new char[size];
