@@ -1,0 +1,13 @@
+cloud:
+  aws:
+    s3:
+      bucket: eight-profile-image
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      instanceProfile: true
+
+
+
