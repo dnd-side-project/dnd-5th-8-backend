@@ -33,7 +33,7 @@ public class SpaceService {
         Space space = spaceRepository.findById(space_id)
                 .orElseThrow(()->new IllegalArgumentException("해당 ID가 존재하지 않습니다. id="+space_id));
 
-        space.addUser(user);
+        space.addUser(user); // 이 부분에서 add가 안되는 듯?
 
         return space_id;
     }
