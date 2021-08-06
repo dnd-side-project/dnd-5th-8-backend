@@ -1,8 +1,8 @@
 package com.dnd.eight.Service;
 
-import com.dnd.eight.Controller.Dto.SpaceAttendDto;
 import com.dnd.eight.Controller.Dto.SpaceIdUpdateDto;
 import com.dnd.eight.Controller.Dto.SpaceRequestDto;
+import com.dnd.eight.Controller.Dto.SpaceResponseDto;
 import com.dnd.eight.Domain.Login.User;
 import com.dnd.eight.Domain.Login.UserRepository;
 import com.dnd.eight.Domain.Space.Space;
@@ -11,31 +11,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @RequiredArgsConstructor
 @Service
 public class SpaceService {
     private final SpaceRepository spaceRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public Long updateSpaceId(Long user_id, SpaceIdUpdateDto spaceIdUpdateDto) {
         User user = userRepository.findById(user_id)
                 .orElseThrow(()->new IllegalArgumentException("해당 ID가 존재하지 않습니다. id="+user_id));
 
-        List<SpaceAttendDto> spacelist = spaceRepository.findByCode(spaceIdUpdateDto.getCode()).stream()
-                .map(SpaceAttendDto::new)
-                .collect(Collectors.toList());
-        Long space_id = spacelist.get(0).getId();
-
-        Space space = spaceRepository.findById(space_id)
-                .orElseThrow(()->new IllegalArgumentException("해당 ID가 존재하지 않습니다. id="+space_id));
+        Space space = spaceRepository.findByCode(spaceIdUpdateDto.getCode()).orElse(null);
 
         space.addUser(user); // 이 부분에서 add가 안되는 듯?
 
-        return space_id;
+        return space.getId();
     }
 
     @Transactional
@@ -75,9 +66,20 @@ public class SpaceService {
         return new String(tmp);
     }
 
-    public List<SpaceAttendDto> attendSpace(String code) {
-        return spaceRepository.findByCode(code).stream()
-                .map(SpaceAttendDto::new)
-                .collect(Collectors.toList());
+    public SpaceResponseDto attend(String code){
+        Space space = spaceRepository.findByCode(code).orElse(null);
+        SpaceResponseDto responseDto = new SpaceResponseDto();
+
+        if(space == null){ // 코드에 해당하는 space x
+            responseDto.setSpaceName("");
+            responseDto.setUserCount(0L);
+            responseDto.setIsExist(false);
+        }
+        else{
+            responseDto.setSpaceName(space.getName());
+            responseDto.setUserCount(space.getUsers().stream().count());
+            responseDto.setIsExist(true);
+        }
+        return responseDto;
     }
 }
