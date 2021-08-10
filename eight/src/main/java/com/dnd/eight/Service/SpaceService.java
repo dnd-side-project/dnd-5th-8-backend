@@ -38,7 +38,7 @@ public class SpaceService {
         Space space = spaceRepository.save(Space.builder()
                 .code(randomCode)
                 .name(spaceRequestDto.getName())
-                .question_number(1)
+                .question_number(1L)
                 .count(1)
                 .build()
         );
