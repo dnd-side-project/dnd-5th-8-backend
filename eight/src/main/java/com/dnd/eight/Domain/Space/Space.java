@@ -1,4 +1,6 @@
 package com.dnd.eight.Domain.Space;
+import com.dnd.eight.Domain.DailyQuestion.Answer;
+import com.dnd.eight.Domain.DailyQuestion.Comment;
 import com.dnd.eight.Domain.Login.User;
 import lombok.*;
 import javax.persistence.*;
@@ -17,20 +19,26 @@ public class Space {
     @Column(name = "space_id")
     private Long id;
 
-    @OneToMany(mappedBy = "space", fetch = FetchType.LAZY)
-    private List<User> users = new ArrayList<>();
-
     @Column(length = 500, nullable = false)
     private String code;
 
     @Column(length = 500, nullable = false)
     private String name;
 
-    private int question_number;
+    private Long question_number;
     private int count;
 
+    @OneToMany(mappedBy = "space")
+    private List<User> users = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "space")
+//    private List<Comment> comments = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "space")
+//    private List<Answer> answers = new ArrayList<>();
+
     @Builder
-    public Space(String code, String name, int question_number, int count) {
+    public Space(String code, String name, Long question_number, int count) {
         this.code = code;
         this.name = name;
         this.question_number = question_number;

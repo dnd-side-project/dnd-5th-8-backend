@@ -1,7 +1,11 @@
 package com.dnd.eight.Domain.Login;
+import com.dnd.eight.Domain.DailyQuestion.Answer;
+import com.dnd.eight.Domain.DailyQuestion.Comment;
 import com.dnd.eight.Domain.Space.Space;
 import lombok.*;
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,10 +18,6 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "space_id")
-    private Space space;
-
     @Column(nullable = false)
     private String nickname;
 
@@ -25,6 +25,16 @@ public class User {
     private String email;
 
     private String profile;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "space_id")
+    private Space space;
+
+    @OneToMany(mappedBy = "user")
+    private List<Answer> answer = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public User(String nickname, String email, String profile) {
@@ -39,5 +49,7 @@ public class User {
 
         return this;
     }
+
+
 }
 
