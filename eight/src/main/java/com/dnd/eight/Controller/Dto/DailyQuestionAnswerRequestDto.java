@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
+@Data
 @NoArgsConstructor
 public class DailyQuestionAnswerRequestDto {
     String content;
