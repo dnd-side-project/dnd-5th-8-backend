@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Setter
+@Data
 @NoArgsConstructor
 public class DailyQuestionListResponseDto {
     private Long questionId;

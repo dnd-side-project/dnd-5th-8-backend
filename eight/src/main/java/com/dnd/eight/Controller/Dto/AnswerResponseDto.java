@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import java.util.LinkedHashMap;
 
-@Setter
+@Data
 @NoArgsConstructor
 public class AnswerResponseDto {
     String user_nickName;
