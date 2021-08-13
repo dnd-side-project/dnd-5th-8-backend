@@ -37,10 +37,11 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<byte[]> userProfile(@PathVariable Long id) throws IOException {
+    public String userProfile(@PathVariable Long id) throws IOException {
         User user = userService.findById(id);
-        String profileName = "profile" + user.getProfile().substring(user.getProfile().lastIndexOf("/"));
-        return uploadService.download(profileName);
+        return user.getProfile();
+//        String profileName = "profile" + user.getProfile().substring(user.getProfile().lastIndexOf("/"));
+//        return uploadService.download(profileName);
     }
 
 }

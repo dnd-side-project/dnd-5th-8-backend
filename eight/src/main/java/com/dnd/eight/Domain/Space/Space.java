@@ -1,4 +1,5 @@
 package com.dnd.eight.Domain.Space;
+import com.dnd.eight.Domain.DailyQuestion.SpaceQuestion;
 import com.dnd.eight.Domain.Login.User;
 import lombok.*;
 import javax.persistence.*;
@@ -17,20 +18,23 @@ public class Space {
     @Column(name = "space_id")
     private Long id;
 
-    @OneToMany(mappedBy = "space", fetch = FetchType.LAZY)
-    private List<User> users = new ArrayList<>();
-
     @Column(length = 500, nullable = false)
     private String code;
 
     @Column(length = 500, nullable = false)
     private String name;
 
-    private int question_number;
+    private Long question_number;
     private int count;
 
+    @OneToMany(mappedBy = "space")
+    private List<User> users = new ArrayList<>();
+
+    @OneToMany(mappedBy = "space")
+    private List<SpaceQuestion> spaceQuestionList = new ArrayList<>();
+
     @Builder
-    public Space(String code, String name, int question_number, int count) {
+    public Space(String code, String name, Long question_number, int count) {
         this.code = code;
         this.name = name;
         this.question_number = question_number;
@@ -40,5 +44,10 @@ public class Space {
     public void addUser(User user){
         users.add(user);
         user.setSpace(this);
+    }
+
+    public Long updateQuestionNumber(){
+        this.question_number = this.getQuestion_number()+1;
+        return this.question_number;
     }
 }
