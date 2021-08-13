@@ -6,9 +6,8 @@ import com.dnd.eight.Domain.Login.User;
 import com.dnd.eight.Service.S3FileUploadService;
 import com.dnd.eight.Service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.io.File;
+
 import java.io.IOException;
 
 
@@ -19,11 +18,10 @@ public class UserController {
     private final S3FileUploadService uploadService;
 
     @PostMapping("/user")
-    public Long createUser(@RequestBody UserRequestDto userDto) throws IOException {
-        File outputFile = uploadService.imgUrlToFile(userDto.getProfile());
-        userDto.setProfile(uploadService.upload(outputFile, "profile"));
-
-        outputFile.delete();
+    public Long createUser(@RequestBody UserRequestDto userDto) {
+//        File outputFile = uploadService.imgUrlToFile(userDto.getProfile());
+//        userDto.setProfile(uploadService.upload(outputFile, "profile"));
+//        outputFile.delete();
         return userService.save(userDto);
     }
 
@@ -37,11 +35,8 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public String userProfile(@PathVariable Long id) throws IOException {
+    public String userProfile(@PathVariable Long id) {
         User user = userService.findById(id);
         return user.getProfile();
-//        String profileName = "profile" + user.getProfile().substring(user.getProfile().lastIndexOf("/"));
-//        return uploadService.download(profileName);
     }
-
 }
