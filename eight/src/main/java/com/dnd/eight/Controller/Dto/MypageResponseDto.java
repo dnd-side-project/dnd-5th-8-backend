@@ -7,8 +7,8 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-public class SpaceResponseDto {
-    String spaceName;
-    Long userCount;
-    Boolean isExist;
+public class MypageResponseDto {
+    String userName;
+    String userProfile;
+    String code;
 }

@@ -1,14 +1,13 @@
 package com.dnd.eight.Controller.Dto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
-@Getter
+@Data
 @NoArgsConstructor
-public class SpaceResponseDto {
-    String spaceName;
-    Long userCount;
-    Boolean isExist;
+public class DailyQuestionAnswerRequestDto {
+    String content;
+    Long userId;
 }
