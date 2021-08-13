@@ -1,8 +1,9 @@
 package com.dnd.eight.Controller;
 
-import com.dnd.eight.Controller.Dto.DailyQuestionRequestDto;
+import com.dnd.eight.Controller.Dto.DailyQuestionAnswerRequestDto;
+import com.dnd.eight.Controller.Dto.DailyQuestionListResponseDto;
+import com.dnd.eight.Controller.Dto.DailyQuestionCommentRequestDto;
 import com.dnd.eight.Controller.Dto.DailyQuestionResponseDto;
-import com.dnd.eight.Domain.DailyQuestion.Question;
 import com.dnd.eight.Service.DailyQuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -13,41 +14,35 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class DailyQuestionController {
-    /** 추가 할 사항
-     * 1. space의 question_number 올리는 조건
-     * 2. 댓글 생성된 시간 (AOP 적용)
-     * 3. REST API 규칙에 맞게 모든 controller의 반환 (ex. http status code, POST => created 201) 변경
-     */
     private final DailyQuestionService questionService;
 
-    // 오늘 질문 Get mapping
+    //1. daily-question 오늘의 질문 조회
     @GetMapping("/daily-questions/space/{spaceId}")
-    public String todayQuestion(@PathVariable Long spaceId){
+    public DailyQuestionResponseDto todayQuestion(@PathVariable Long spaceId){
         return questionService.findTodayQuestion(spaceId);
     }
 
-    // 오늘 질문에 대한 답 저장 (answer) Post mapping
-    @PostMapping("/daily-questions/{questionId}/answer")
-    public Long saveAnswer(@PathVariable Long questionId, @RequestBody DailyQuestionRequestDto requestDto){
-        return questionService.saveAnswer(questionId, requestDto.getUserId(), requestDto.getContent());
+    //2. daily-question 오늘의 질문에 대한 user의 답변 저장
+    @PostMapping("/daily-questions/{questionId}/answer/space/{spaceId}")
+    public Long saveAnswer(@PathVariable Long questionId, @PathVariable Long spaceId, @RequestBody DailyQuestionAnswerRequestDto requestDto){
+        return questionService.saveAnswer(questionId, spaceId, requestDto.getUserId(), requestDto.getContent());
     }
 
-    // 통신기록
-    // 1. 오늘날 전까지의 질문 리스트, 각 질문들에 대한 comment수 같이 retrurn => Get mapping
+    //3. daily-question 통신기록 조회
     @GetMapping("/daily-questions/list/space/{spaceId}")
-    public List<Question> questionList(@PathVariable Long spaceId){
+    public List<DailyQuestionListResponseDto> questionList(@PathVariable Long spaceId){
         return questionService.findQuestions(spaceId);
     }
 
-    // 2. 이전날의 질문에 대한 comment 저장 => Post mapping
+    //4. daily-question 통신기록 댓글 저장
     @PostMapping("/daily-questions/{questionId}/comment")
-    public Long saveComment(@PathVariable Long questionId, @RequestBody DailyQuestionRequestDto requestDto){
-        return questionService.saveComment(questionId, requestDto.getUserId(), requestDto.getContent());
+    public Long saveComment(@PathVariable Long questionId, @RequestBody DailyQuestionCommentRequestDto requestDto){
+        return questionService.saveComment(questionId, requestDto.getUserId(), requestDto.getContent(), requestDto.getEmoji());
     }
 
-    // 3. 이전날의 질문을 클릭하면 해당 질문에 대한 answer, comment return => Get mapping
+    //5. daily-question 통신기록중 하나의 기록 조회
     @GetMapping("/daily-questions/{questionId}/space/{spaceId}")
-    public LinkedHashMap<String, List<DailyQuestionResponseDto>> questionInfo(@PathVariable Long questionId, @PathVariable Long spaceId){
+    public LinkedHashMap<String, Object> questionInfo(@PathVariable Long questionId, @PathVariable Long spaceId){
         return questionService.questionInfo(questionId, spaceId);
     }
 }

@@ -31,7 +31,7 @@ public class User {
     private Space space;
 
     @OneToMany(mappedBy = "user")
-    private List<Answer> answer = new ArrayList<>();
+    private List<Answer> answers = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();

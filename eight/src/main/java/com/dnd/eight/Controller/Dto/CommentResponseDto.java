@@ -8,8 +8,9 @@ import java.time.LocalDateTime;
 
 @Setter
 @NoArgsConstructor
-public class DailyQuestionResponseDto {
-    private Long questionId;
-    private String questionContent;
-    private LocalDateTime date;
+public class CommentResponseDto {
+    String user_nickName;
+    String content;
+    String emoji;
+    private LocalDateTime createdDate;
 }

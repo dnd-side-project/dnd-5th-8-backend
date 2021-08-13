@@ -2,10 +2,7 @@ package com.dnd.eight.Domain.DailyQuestion;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -20,9 +17,4 @@ public class Question {
     @Column(nullable = false)
     private String content;
 
-//    @OneToMany(mappedBy = "question")
-//    private List<Answer> answers = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "question")
-//    private List<Comment> comments = new ArrayList<>();
 }

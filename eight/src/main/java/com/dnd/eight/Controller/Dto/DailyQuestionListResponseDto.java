@@ -8,8 +8,9 @@ import java.time.LocalDateTime;
 
 @Setter
 @NoArgsConstructor
-public class DailyQuestionResponseDto {
+public class DailyQuestionListResponseDto {
     private Long questionId;
-    private String questionContent;
+    private String content;
+    private Long answerCount;
     private LocalDateTime date;
 }
