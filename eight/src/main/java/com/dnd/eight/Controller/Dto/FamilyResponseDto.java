@@ -8,4 +8,5 @@ import lombok.NoArgsConstructor;
 public class FamilyResponseDto {
     Long userId;
     String nickname;
+    String profile;
 }
