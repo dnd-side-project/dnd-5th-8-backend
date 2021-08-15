@@ -1,15 +1,13 @@
 package com.dnd.eight.Domain.Letter;
 
 import com.dnd.eight.Domain.Login.User;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 public class Letter {
     @Id
@@ -21,11 +19,11 @@ public class Letter {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="to_userId")
+    @JoinColumn(name="to_user_id")
     private User to_user; // 받는 사람
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="from_userId")
+    @JoinColumn(name="from_user_id")
     private User from_user; // 보낸 사람
 
     public static Letter saveLetter(String content, User to_user, User from_user) {

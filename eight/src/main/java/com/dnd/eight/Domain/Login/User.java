@@ -1,6 +1,7 @@
 package com.dnd.eight.Domain.Login;
 import com.dnd.eight.Domain.DailyQuestion.Answer;
 import com.dnd.eight.Domain.DailyQuestion.Comment;
+import com.dnd.eight.Domain.Letter.Letter;
 import com.dnd.eight.Domain.Space.Space;
 import lombok.*;
 import javax.persistence.*;
@@ -35,6 +36,12 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "to_user")
+    private List<Letter> toletters = new ArrayList<>();
+
+    @OneToMany(mappedBy = "from_user")
+    private List<Letter> fromletters = new ArrayList<>();
 
     @Builder
     public User(String nickname, String email, String profile) {

@@ -46,16 +46,14 @@ public class LetterService {
             }
         }
 
-        List<Letter> letter = letterRepository.findAll();
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 ID가 존재하지 않습니다. id=" + userId));
+        List<Letter> letters = user.getToletters();
 
-        for(Letter letters: letter) {
-            if(userId == letters.getTo_user().getId()) {
-                recieveLetterResponseDto = new RecieveLetterResponseDto();
-                User user = letters.getFrom_user();
-                recieveLetterResponseDto.setRecieveNickname(user.getNickname());
-                recieveLetterResponseDto.setContent(letters.getContent());
-                recieveList.add(recieveLetterResponseDto);
-            }
+        for(Letter letter: letters) {
+            recieveLetterResponseDto = new RecieveLetterResponseDto();
+            recieveLetterResponseDto.setRecieveNickname(letter.getFrom_user().getNickname());
+            recieveLetterResponseDto.setContent(letter.getContent());
+            recieveList.add(recieveLetterResponseDto);
         }
 
         map.put("family", familyList);
@@ -69,15 +67,14 @@ public class LetterService {
         List<SendLetterResponseDto> responseDtoList = new ArrayList<>();
         SendLetterResponseDto sendLetterResponseDto;
 
-        List<Letter> letter = letterRepository.findAll();
-        for(Letter letters: letter) {
-            if(userId == letters.getFrom_user().getId()) {
-                sendLetterResponseDto = new SendLetterResponseDto();
-                User user = letters.getTo_user();
-                sendLetterResponseDto.setToNickname(user.getNickname());
-                sendLetterResponseDto.setContent(letters.getContent());
-                responseDtoList.add(sendLetterResponseDto);
-            }
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 ID가 존재하지 않습니다. id=" + userId));
+        List<Letter> letters = user.getFromletters();
+
+        for(Letter letter: letters) {
+            sendLetterResponseDto = new SendLetterResponseDto();
+            sendLetterResponseDto.setToNickname(letter.getTo_user().getNickname());
+            sendLetterResponseDto.setContent(letter.getContent());
+            responseDtoList.add(sendLetterResponseDto);
         }
 
         return responseDtoList;
