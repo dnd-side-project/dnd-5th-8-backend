@@ -46,6 +46,7 @@ public class SpaceService {
                 .name(spaceRequestDto.getName())
                 .question_number(1L)
                 .count(1)
+                .familyTalk(false)
                 .build()
         );
 
@@ -75,6 +76,7 @@ public class SpaceService {
         return new String(tmp);
     }
 
+    @Transactional(readOnly = true)
     public SpaceResponseDto attend(String code){
         Space space = spaceRepository.findByCode(code).orElse(null);
         SpaceResponseDto responseDto = new SpaceResponseDto();
@@ -90,5 +92,18 @@ public class SpaceService {
             responseDto.setIsExist(true);
         }
         return responseDto;
+    }
+
+    @Transactional
+    public Boolean getFamilyTalk(Long spaceId){
+        Space space = spaceRepository.findById(spaceId)
+                .orElseThrow(()->new IllegalArgumentException("해당 ID가 존재하지 않습니다. id="+spaceId));
+
+        if(!space.getFamilyTalk()){
+            space.updateFamilyTalk();
+            return false;
+        }
+
+        return space.getFamilyTalk();
     }
 }
