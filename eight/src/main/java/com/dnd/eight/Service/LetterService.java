@@ -26,10 +26,7 @@ public class LetterService {
     private final NoticeRepository noticeRepository;
 
     @Transactional(readOnly = true)
-    public LinkedHashMap<String, Object> recieveLetterList(RecieveLetterRequestDto recieveLetterRequestDto) {
-        long spaceId = recieveLetterRequestDto.getSpaceId();
-        long userId = recieveLetterRequestDto.getUserId();
-
+    public LinkedHashMap<String, Object> recieveLetterList(Long userId, Long spaceId) {
         RecieveLetterResponseDto recieveLetterResponseDto;
         FamilyResponseDto familyResponseDto;
 

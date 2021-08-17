@@ -14,11 +14,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LetterController {
     private final LetterService letterService;
-
+/*
     @GetMapping("/letter/recieve")
     public LinkedHashMap<String, Object> RecieveLetterList(@RequestBody RecieveLetterRequestDto recieveLetterRequestDto) {
         return letterService.recieveLetterList(recieveLetterRequestDto);
     }
+*/
+    @GetMapping("/letter/recieve/{userId}/{spaceId}")
+    public LinkedHashMap<String, Object> RecieveLetterList(@PathVariable Long userId, @PathVariable Long spaceId) {
+        return letterService.recieveLetterList(userId, spaceId);
+    }
+
 
     @GetMapping("/letter/send/{userId}")
     public List<SendLetterResponseDto> SendLetterList(@PathVariable Long userId) {
