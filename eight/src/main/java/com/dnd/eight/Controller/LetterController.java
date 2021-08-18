@@ -32,7 +32,7 @@ public class LetterController {
     }
 
     @PostMapping("/letter")
-    public String SendLetter(@RequestBody SendLetterRequestDto sendLetterRequestDto) {
+    public Long SendLetter(@RequestBody SendLetterRequestDto sendLetterRequestDto) {
         return letterService.saveLetter(sendLetterRequestDto);
     }
 }
