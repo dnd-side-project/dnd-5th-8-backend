@@ -83,7 +83,7 @@ public class LetterService {
     }
 
     @Transactional
-    public String saveLetter(SendLetterRequestDto sendLetterRequestDto) {
+    public Long saveLetter(SendLetterRequestDto sendLetterRequestDto) {
         Long to_userId = sendLetterRequestDto.getTouserId();
         Long from_userId = sendLetterRequestDto.getFromuserId();
         String content = sendLetterRequestDto.getContent();
@@ -91,11 +91,15 @@ public class LetterService {
         User to_user = userRepository.findById(to_userId).orElseThrow(()->new IllegalArgumentException("해당 ID가 존재하지 않습니다. id=" + to_userId));
         User from_user = userRepository.findById(from_userId).orElseThrow(()->new IllegalArgumentException("해당 ID가 존재하지 않습니다. id=" + from_userId));
         Letter letter = Letter.saveLetter(content, to_user, from_user);
+/*
         letterRepository.save(letter);
 
 
         Notice notice = noticeRepository.findByUserid(to_userId).orElseThrow(() -> new IllegalArgumentException("userid 해당하는 id 없습니다 " + to_userId));
 
         return notice.getToken();
+
+ */
+        return letterRepository.save(letter).getId();
     }
 }
