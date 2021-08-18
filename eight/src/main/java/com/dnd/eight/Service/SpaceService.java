@@ -38,7 +38,7 @@ public class SpaceService {
     @Transactional
     public String createSpace(SpaceRequestDto spaceRequestDto) {
 
-        int length = 10;
+        int length = 5;
         String randomCode = getRandomStr(length);
 
         Space space = spaceRepository.save(Space.builder()
