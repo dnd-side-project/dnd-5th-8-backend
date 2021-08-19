@@ -1,8 +1,8 @@
 package com.dnd.eight.Service;
 
+import com.dnd.eight.Controller.Dto.FamilyResponseDto;
 import com.dnd.eight.Controller.Dto.SpaceIdUpdateDto;
 import com.dnd.eight.Controller.Dto.SpaceRequestDto;
-import com.dnd.eight.Controller.Dto.SpaceResponseDto;
 import com.dnd.eight.Domain.DailyQuestion.Question;
 import com.dnd.eight.Domain.DailyQuestion.QuestionRepository;
 import com.dnd.eight.Domain.DailyQuestion.SpaceQuestion;
@@ -14,6 +14,10 @@ import com.dnd.eight.Domain.Space.SpaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -41,17 +45,19 @@ public class SpaceService {
         int length = 5;
         String randomCode = getRandomStr(length);
 
+        Long user_id = Long.valueOf(spaceRequestDto.getId());
+        User user = userRepository.findById(user_id)
+                .orElseThrow(()->new IllegalArgumentException("해당 ID가 존재하지 않습니다. id="+user_id));
+
         Space space = spaceRepository.save(Space.builder()
                 .code(randomCode)
                 .name(spaceRequestDto.getName())
                 .question_number(1L)
                 .count(1)
+                .roommasterId(user_id)
                 .build()
         );
 
-        Long user_id = Long.valueOf(spaceRequestDto.getId());
-        User user = userRepository.findById(user_id)
-                .orElseThrow(()->new IllegalArgumentException("해당 ID가 존재하지 않습니다. id="+user_id));
         space.addUser(user);
 
         Question question = questionRepository.findById(1L).orElseThrow(()->new IllegalArgumentException("해당 ID가 존재하지 않습니다. id="+1L));
@@ -75,20 +81,42 @@ public class SpaceService {
         return new String(tmp);
     }
 
-    public SpaceResponseDto attend(String code){
+    public LinkedHashMap<String, Object> attend(String code) {
+        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         Space space = spaceRepository.findByCode(code).orElse(null);
-        SpaceResponseDto responseDto = new SpaceResponseDto();
 
         if(space == null){ // 코드에 해당하는 space x
-            responseDto.setSpaceName("");
-            responseDto.setUserCount(0L);
-            responseDto.setIsExist(false);
+            map.put("spaceName", "");
+            map.put("userCount", 0L);
+            map.put("isExist", false);
+            map.put("roomMaster", "");
+            map.put("family", null);
         }
         else{
-            responseDto.setSpaceName(space.getName());
-            responseDto.setUserCount(space.getUsers().stream().count());
-            responseDto.setIsExist(true);
+            // 기존 응답
+            User master = userRepository.findById(space.getRoommasterId())
+                    .orElseThrow(()->new IllegalArgumentException("해당 ID가 존재하지 않습니다. id="+space.getRoommasterId()));
+            map.put("spaceName", space.getName());
+            map.put("userCount", space.getUsers().stream().count());
+            map.put("isExist", true);
+            map.put("roomMaster", master.getNickname());
+
+            // 스페이스에 참가중인 가족 구성원 리스트
+            List<Object> familyList = new ArrayList<>();
+            List<User> users = space.getUsers();
+            FamilyResponseDto familyResponseDto;
+
+            for(User user: users) {
+                familyResponseDto = new FamilyResponseDto();
+                familyResponseDto.setUserId(user.getId());
+                familyResponseDto.setNickname(user.getNickname());
+                familyResponseDto.setProfile(user.getProfile());
+                familyList.add(familyResponseDto);
+            }
+
+            map.put("family", familyList);
         }
-        return responseDto;
+
+        return map;
     }
 }
