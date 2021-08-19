@@ -5,8 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class FamilyTalkRoundMessage {
-    private Long spaceId;
-    private Long userId;
-    private Integer round;
+public class FamilyTalkQuestionRequestDto {
+    private Long subCategoryId;
+    private String content;
 }

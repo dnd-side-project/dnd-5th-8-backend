@@ -29,10 +29,10 @@ public class UserService {
     }
 
     @Transactional
-    public Boolean update(Long id, String profile, String nickname){
+    public String update(Long id, String profile, String nickname){
         User user = findById(id);
         user.update(nickname, profile);
-        return true;
+        return user.getProfile();
     }
 
     @Transactional

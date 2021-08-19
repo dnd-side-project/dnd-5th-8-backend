@@ -1,4 +1,4 @@
-package com.dnd.eight.Controller.Dto;
+package com.dnd.eight.Controller.Message;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

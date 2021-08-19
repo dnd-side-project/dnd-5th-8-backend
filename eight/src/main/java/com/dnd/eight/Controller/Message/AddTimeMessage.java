@@ -1,11 +1,10 @@
-package com.dnd.eight.Controller.Dto;
+package com.dnd.eight.Controller.Message;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class FamilyTalkJoinMessage {
+public class AddTimeMessage {
     private Long spaceId;
-    private Long userId;
 }

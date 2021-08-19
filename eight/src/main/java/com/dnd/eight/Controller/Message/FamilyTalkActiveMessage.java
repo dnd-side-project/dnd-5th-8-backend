@@ -1,4 +1,4 @@
-package com.dnd.eight.Controller.Dto;
+package com.dnd.eight.Controller.Message;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -6,5 +6,5 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class FamilyTalkActiveMessage {
-    private String active;
+    private boolean active;
 }

@@ -19,5 +19,19 @@ public class FamilyTalkQuestion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="sub_category_id")
     private SubCategory subCategory;
+
+    public void setSubCategory(SubCategory subCategory){
+        this.subCategory = subCategory;
+        subCategory.getFamilyTalkQuestions().add(this);
+    }
+
+    public static FamilyTalkQuestion createFamilyTalkQuestions(String content, SubCategory subCategory){
+        FamilyTalkQuestion familyTalkQuestion = new FamilyTalkQuestion();
+
+        familyTalkQuestion.content = content;
+        familyTalkQuestion.setSubCategory(subCategory);
+
+        return familyTalkQuestion;
+    }
 }
 

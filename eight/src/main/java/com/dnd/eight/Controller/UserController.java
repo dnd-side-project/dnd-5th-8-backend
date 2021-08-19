@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @PutMapping("/user/{id}")
-    public Boolean updateUser(@ModelAttribute UserUpdateDto userDto, @PathVariable Long id) throws IOException {
+    public String updateUser(@ModelAttribute UserUpdateDto userDto, @PathVariable Long id) throws IOException {
         String deleteProfileName = userService.findProfile(id);
         uploadService.delete(deleteProfileName);
 
