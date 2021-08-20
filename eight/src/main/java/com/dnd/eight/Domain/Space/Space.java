@@ -26,6 +26,8 @@ public class Space {
 
     private Long question_number;
     private int count;
+    private Long roommasterId;
+
 
     @OneToMany(mappedBy = "space")
     private List<User> users = new ArrayList<>();
@@ -34,11 +36,12 @@ public class Space {
     private List<SpaceQuestion> spaceQuestionList = new ArrayList<>();
 
     @Builder
-    public Space(String code, String name, Long question_number, int count) {
+    public Space(String code, String name, Long question_number, int count, Long roommasterId) {
         this.code = code;
         this.name = name;
         this.question_number = question_number;
         this.count = count;
+        this.roommasterId = roommasterId;
     }
 
     public void addUser(User user){

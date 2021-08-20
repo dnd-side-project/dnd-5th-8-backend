@@ -5,6 +5,8 @@ import com.dnd.eight.Domain.Letter.Letter;
 import com.dnd.eight.Domain.Letter.LetterRepository;
 import com.dnd.eight.Domain.Login.User;
 import com.dnd.eight.Domain.Login.UserRepository;
+import com.dnd.eight.Domain.Notice.Notice;
+import com.dnd.eight.Domain.Notice.NoticeRepository;
 import com.dnd.eight.Domain.Space.Space;
 import com.dnd.eight.Domain.Space.SpaceRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +23,10 @@ public class LetterService {
     private final LetterRepository letterRepository;
     private final SpaceRepository spaceRepository;
     private final UserRepository userRepository;
+    private final NoticeRepository noticeRepository;
 
     @Transactional(readOnly = true)
-    public LinkedHashMap<String, Object> recieveLetterList(RecieveLetterRequestDto recieveLetterRequestDto) {
-        long spaceId = recieveLetterRequestDto.getSpaceId();
-        long userId = recieveLetterRequestDto.getUserId();
-
+    public LinkedHashMap<String, Object> recieveLetterList(Long userId, Long spaceId) {
         RecieveLetterResponseDto recieveLetterResponseDto;
         FamilyResponseDto familyResponseDto;
 
@@ -89,10 +89,19 @@ public class LetterService {
         Long to_userId = sendLetterRequestDto.getTouserId();
         Long from_userId = sendLetterRequestDto.getFromuserId();
         String content = sendLetterRequestDto.getContent();
+
         User to_user = userRepository.findById(to_userId).orElseThrow(()->new IllegalArgumentException("해당 ID가 존재하지 않습니다. id=" + to_userId));
         User from_user = userRepository.findById(from_userId).orElseThrow(()->new IllegalArgumentException("해당 ID가 존재하지 않습니다. id=" + from_userId));
         Letter letter = Letter.saveLetter(content, to_user, from_user);
+/*
+        letterRepository.save(letter);
 
+
+        Notice notice = noticeRepository.findByUserid(to_userId).orElseThrow(() -> new IllegalArgumentException("userid 해당하는 id 없습니다 " + to_userId));
+
+        return notice.getToken();
+
+ */
         return letterRepository.save(letter).getId();
     }
 }
