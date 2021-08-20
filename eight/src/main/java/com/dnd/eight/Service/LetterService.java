@@ -54,6 +54,7 @@ public class LetterService {
             recieveLetterResponseDto = new RecieveLetterResponseDto();
             recieveLetterResponseDto.setUserId(letter.getFrom_user().getId());
             recieveLetterResponseDto.setRecieveNickname(letter.getFrom_user().getNickname());
+            recieveLetterResponseDto.setRecieveNickname(letter.getFrom_user().getProfile());
             recieveLetterResponseDto.setContent(letter.getContent());
             recieveList.add(recieveLetterResponseDto);
         }
@@ -75,6 +76,7 @@ public class LetterService {
         for(Letter letter: letters) {
             sendLetterResponseDto = new SendLetterResponseDto();
             sendLetterResponseDto.setToNickname(letter.getTo_user().getNickname());
+            sendLetterResponseDto.setToNickname(letter.getTo_user().getProfile());
             sendLetterResponseDto.setContent(letter.getContent());
             responseDtoList.add(sendLetterResponseDto);
         }

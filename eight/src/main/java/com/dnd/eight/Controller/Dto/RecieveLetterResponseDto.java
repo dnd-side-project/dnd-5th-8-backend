@@ -8,5 +8,6 @@ import lombok.NoArgsConstructor;
 public class RecieveLetterResponseDto {
     long userId;
     String recieveNickname;
+    String recieveProfile;
     String content;
 }
