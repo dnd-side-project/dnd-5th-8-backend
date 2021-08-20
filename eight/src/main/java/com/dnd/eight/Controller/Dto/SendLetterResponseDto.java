@@ -7,5 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SendLetterResponseDto {
     String toNickname;
+    String toProfile;
     String content;
 }
