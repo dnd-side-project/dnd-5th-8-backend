@@ -2,8 +2,8 @@ package com.dnd.eight.Controller;
 
 import com.dnd.eight.Controller.Dto.UserRequestDto;
 import com.dnd.eight.Controller.Dto.UserUpdateDto;
+import com.dnd.eight.Controller.Dto.UserUpdateResponseDto;
 import com.dnd.eight.Domain.Login.User;
-import com.dnd.eight.Service.S3FileUploadService;
 import com.dnd.eight.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,23 +15,25 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final S3FileUploadService uploadService;
 
     @PostMapping("/user")
     public Long createUser(@RequestBody UserRequestDto userDto) {
-//        File outputFile = uploadService.imgUrlToFile(userDto.getProfile());
-//        userDto.setProfile(uploadService.upload(outputFile, "profile"));
-//        outputFile.delete();
         return userService.save(userDto);
     }
 
     @PutMapping("/user/{id}")
-    public String updateUser(@ModelAttribute UserUpdateDto userDto, @PathVariable Long id) throws IOException {
-        String deleteProfileName = userService.findProfile(id);
-        uploadService.delete(deleteProfileName);
+    public UserUpdateResponseDto updateUser(@ModelAttribute UserUpdateDto userDto, @PathVariable Long id) throws IOException {
+        if(userDto.getProfile() == null){
+            //nickname
+            return userService.update(id, userDto.getNickname());
+        }
 
-        String profileUrl = uploadService.upload(userDto.getProfile(), "profile");
-        return userService.update(id, profileUrl, userDto.getNickname());
+        if(userDto.getNickname() == null){
+            //profile
+            return userService.update(id, userDto.getProfile());
+        }
+
+        return userService.update(id, userDto.getNickname(), userDto.getProfile());
     }
 
     @GetMapping("/user/{id}")

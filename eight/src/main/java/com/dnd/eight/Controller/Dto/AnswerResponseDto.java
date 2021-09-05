@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 @Data
 @NoArgsConstructor
 public class AnswerResponseDto {
+    String user_profile;
     String user_nickName;
     String content;
 }

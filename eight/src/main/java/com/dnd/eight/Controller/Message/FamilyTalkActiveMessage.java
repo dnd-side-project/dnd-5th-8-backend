@@ -6,5 +6,5 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class FamilyTalkActiveMessage {
-    private boolean active;
+    private boolean active = false;
 }

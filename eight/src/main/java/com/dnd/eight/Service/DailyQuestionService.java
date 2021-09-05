@@ -25,6 +25,7 @@ public class DailyQuestionService {
     private final AnswerRepository answerRepository;
     private final CommentRepository commentRepository;
     private final SpaceQuestionRepository spaceQuestionRepository;
+    private final UserService userService;
 
     @Transactional
     @Scheduled(cron = "0 0 09 * * *", zone = "Asia/Seoul")
@@ -75,6 +76,22 @@ public class DailyQuestionService {
     }
 
     @Transactional(readOnly = true)
+    public List<DailyQuestionAnswersDto> getAnswers(Long spaceId, Long questionId){
+        List<Answer> answers = answerRepository.getAnswers(spaceId, questionId);
+        List<DailyQuestionAnswersDto>  answerList = new ArrayList<>();
+        DailyQuestionAnswersDto dto;
+
+        for(Answer answer : answers){
+            dto = new DailyQuestionAnswersDto();
+            dto.setNickName(userService.findById(answer.getId()).getNickname());
+            dto.setAnswer(answer.getContent());
+            answerList.add(dto);
+        }
+
+        return answerList;
+    }
+
+    @Transactional(readOnly = true)
     public List<DailyQuestionListResponseDto> findQuestions(Long spaceId) {
         List<DailyQuestionListResponseDto> responseDtoList = new ArrayList<>();
         DailyQuestionListResponseDto responseDto;
@@ -116,6 +133,7 @@ public class DailyQuestionService {
         List<User> users = space.getUsers();
         for(User user: users){
             answerResponseDto = new AnswerResponseDto();
+            answerResponseDto.setUser_profile(user.getProfile());
             answerResponseDto.setUser_nickName(user.getNickname());
             answerResponseDto.setContent(answerRepository.getAnswer(questionId, user.getId()));
             answerList.add(answerResponseDto);
@@ -125,6 +143,7 @@ public class DailyQuestionService {
                 continue;
             }
             commentResponseDto = new CommentResponseDto();
+            commentResponseDto.setUser_profile(user.getProfile());
             commentResponseDto.setUser_nickName(user.getNickname());
             commentResponseDto.setContent(comment.getContent());
             commentResponseDto.setCreatedDate(comment.getCreatedDate());

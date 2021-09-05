@@ -57,6 +57,18 @@ public class User {
         return this;
     }
 
+    public User updateNickname(String nickname){
+        this.nickname = nickname;
+
+        return this;
+    }
+
+    public User updateProfile(String profile){
+        this.profile = profile;
+
+        return this;
+    }
+
 
 }
 
