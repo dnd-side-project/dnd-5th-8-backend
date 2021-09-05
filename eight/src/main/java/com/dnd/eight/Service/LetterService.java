@@ -26,10 +26,7 @@ public class LetterService {
     private final NoticeRepository noticeRepository;
 
     @Transactional(readOnly = true)
-    public LinkedHashMap<String, Object> recieveLetterList(RecieveLetterRequestDto recieveLetterRequestDto) {
-        long spaceId = recieveLetterRequestDto.getSpaceId();
-        long userId = recieveLetterRequestDto.getUserId();
-
+    public LinkedHashMap<String, Object> recieveLetterList(Long userId, Long spaceId) {
         RecieveLetterResponseDto recieveLetterResponseDto;
         FamilyResponseDto familyResponseDto;
 
@@ -57,6 +54,7 @@ public class LetterService {
             recieveLetterResponseDto = new RecieveLetterResponseDto();
             recieveLetterResponseDto.setUserId(letter.getFrom_user().getId());
             recieveLetterResponseDto.setRecieveNickname(letter.getFrom_user().getNickname());
+            recieveLetterResponseDto.setRecieveProfile(letter.getFrom_user().getProfile());
             recieveLetterResponseDto.setContent(letter.getContent());
             recieveList.add(recieveLetterResponseDto);
         }
@@ -78,6 +76,7 @@ public class LetterService {
         for(Letter letter: letters) {
             sendLetterResponseDto = new SendLetterResponseDto();
             sendLetterResponseDto.setToNickname(letter.getTo_user().getNickname());
+            sendLetterResponseDto.setToProfile(letter.getTo_user().getProfile());
             sendLetterResponseDto.setContent(letter.getContent());
             responseDtoList.add(sendLetterResponseDto);
         }
@@ -86,7 +85,7 @@ public class LetterService {
     }
 
     @Transactional
-    public String saveLetter(SendLetterRequestDto sendLetterRequestDto) {
+    public Long saveLetter(SendLetterRequestDto sendLetterRequestDto) {
         Long to_userId = sendLetterRequestDto.getTouserId();
         Long from_userId = sendLetterRequestDto.getFromuserId();
         String content = sendLetterRequestDto.getContent();
@@ -94,11 +93,15 @@ public class LetterService {
         User to_user = userRepository.findById(to_userId).orElseThrow(()->new IllegalArgumentException("해당 ID가 존재하지 않습니다. id=" + to_userId));
         User from_user = userRepository.findById(from_userId).orElseThrow(()->new IllegalArgumentException("해당 ID가 존재하지 않습니다. id=" + from_userId));
         Letter letter = Letter.saveLetter(content, to_user, from_user);
+/*
         letterRepository.save(letter);
 
 
         Notice notice = noticeRepository.findByUserid(to_userId).orElseThrow(() -> new IllegalArgumentException("userid 해당하는 id 없습니다 " + to_userId));
 
         return notice.getToken();
+
+ */
+        return letterRepository.save(letter).getId();
     }
 }
