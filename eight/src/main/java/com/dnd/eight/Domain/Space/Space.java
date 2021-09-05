@@ -25,6 +25,10 @@ public class Space {
     private String name;
 
     private Long question_number;
+
+    @Column(columnDefinition = "boolean")
+    private Boolean familyTalk;
+
     private int count;
     private Long roommasterId;
 
@@ -36,11 +40,12 @@ public class Space {
     private List<SpaceQuestion> spaceQuestionList = new ArrayList<>();
 
     @Builder
-    public Space(String code, String name, Long question_number, int count, Long roommasterId) {
+    public Space(String code, String name, Long question_number, int count, Boolean familyTalk, Long roommasterId) {
         this.code = code;
         this.name = name;
         this.question_number = question_number;
         this.count = count;
+        this.familyTalk = familyTalk;
         this.roommasterId = roommasterId;
     }
 
@@ -52,5 +57,9 @@ public class Space {
     public Long updateQuestionNumber(){
         this.question_number = this.getQuestion_number()+1;
         return this.question_number;
+    }
+
+    public void updateFamilyTalk(){
+        this.familyTalk = Boolean.TRUE;
     }
 }

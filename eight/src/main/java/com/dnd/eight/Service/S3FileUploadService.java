@@ -23,6 +23,7 @@ public class S3FileUploadService {
     public String upload(MultipartFile multipartFile, String dir) throws IOException {
         //S3에 저장할 file name 생성
         String origName = multipartFile.getOriginalFilename();
+
         String ext = origName.substring(origName.lastIndexOf('.'));
         String uploadFileName = getUuid() + ext;
 
